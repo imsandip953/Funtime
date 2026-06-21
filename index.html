@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime Aesthetic Mess Marketing Hub</title>
+    <title>Anime Aesthetic Mess Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         :root {
-            /* Light Mode: Shinkai's Golden Hour Afternoon */
+            /* --- DEFAULT MARKET MODE (LIGHT) --- */
             --bg-base: #f0f4f9;
             --anime-sky: linear-gradient(180deg, #74b9ff 0%, #fab1a0 60%, #ffeaa7 100%);
             --panel-glass: rgba(255, 255, 255, 0.45);
@@ -21,12 +21,15 @@
             --accent: #e17055;
             --neon-glow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
             --card-shadow: inset 2px 2px 5px rgba(255,255,255,0.5), 4px 4px 15px rgba(0,0,0,0.05);
+            
+            /* Background Element Toggles */
             --cloud-opacity: 0.85;
             --star-display: none;
+            --bubble-display: none;
         }
 
         [data-theme="dark"] {
-            /* Dark Mode: Your Name's Cosmic Twilight (Deep Indigo, Sunset Violet & Neon Teal) */
+            /* --- DEFAULT MARKET MODE (DARK) --- */
             --bg-base: #0a0a23;
             --anime-sky: linear-gradient(180deg, #050515 0%, #1a0b2e 40%, #48134a 75%, #101233 100%);
             --panel-glass: rgba(18, 12, 38, 0.55);
@@ -38,8 +41,48 @@
             --accent: #f43f5e;
             --neon-glow: 0 0 25px rgba(168, 85, 247, 0.4), inset 0 0 15px rgba(0, 242, 254, 0.1);
             --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            
             --cloud-opacity: 0.4;
             --star-display: block;
+            --bubble-display: none;
+        }
+
+        /* --- WASHROOM MODE OVERRIDES (LIGHT) --- */
+        [data-ui="washroom"] {
+            --bg-base: #eef9f6;
+            --anime-sky: linear-gradient(135deg, #e0f7fa 0%, #b2dfdb 50%, #80cbc4 100%);
+            --panel-glass: rgba(255, 255, 255, 0.55);
+            --card-glass: rgba(224, 242, 241, 0.8);
+            --border-glass: 1px solid rgba(38, 166, 154, 0.4);
+            --text-main: #004d40;
+            --text-muted: #00796b;
+            --primary-gradient: linear-gradient(135deg, #00bfa5 0%, #00796b 100%);
+            --accent: #d81b60;
+            --neon-glow: 0 8px 32px 0 rgba(0, 150, 136, 0.15);
+            --card-shadow: 0 4px 15px rgba(0, 77, 64, 0.05);
+            
+            --cloud-opacity: 0;
+            --star-display: none;
+            --bubble-display: block;
+        }
+
+        /* --- WASHROOM MODE OVERRIDES (DARK) --- */
+        [data-theme="dark"][data-ui="washroom"] {
+            --bg-base: #031417;
+            --anime-sky: linear-gradient(180deg, #010a0c 0%, #031f24 40%, #004d40 85%, #011114 100%);
+            --panel-glass: rgba(2, 24, 27, 0.65);
+            --card-glass: rgba(4, 38, 43, 0.75);
+            --border-glass: 1px solid rgba(0, 242, 254, 0.3);
+            --text-main: #e0f2f1;
+            --text-muted: #80cbc4;
+            --primary-gradient: linear-gradient(135deg, #00f2fe 0%, #00bfa5 100%);
+            --accent: #ff4081;
+            --neon-glow: 0 0 30px rgba(0, 242, 254, 0.35), inset 0 0 15px rgba(0, 191, 165, 0.15);
+            --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            
+            --cloud-opacity: 0;
+            --star-display: none;
+            --bubble-display: block;
         }
 
         * {
@@ -47,6 +90,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Poppins', sans-serif;
+            transition: background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
         }
 
         body {
@@ -61,7 +105,7 @@
             position: relative;
         }
 
-        /* --- ANIME SKY BACKGROUND ENVIRONMENT --- */
+        /* --- BACKGROUND RENDERING SYSTEM --- */
         .anime-sky-bg {
             position: fixed;
             top: 0;
@@ -70,10 +114,9 @@
             height: 100vh;
             background: var(--anime-sky);
             z-index: -3;
-            transition: background 1s ease;
+            transition: background 0.8s ease;
         }
 
-        /* Fluffy Shinkai-style Anime Clouds */
         .anime-clouds {
             position: fixed;
             top: 0;
@@ -83,7 +126,7 @@
             z-index: -2;
             pointer-events: none;
             opacity: var(--cloud-opacity);
-            transition: opacity 1s ease;
+            transition: opacity 0.5s ease;
         }
 
         .cloud {
@@ -93,20 +136,16 @@
             border-radius: 50%;
             animation: cloudFloat infinite linear;
         }
-
-        /* Light Mode clouds get warmer peach tints, Dark mode gets deep purple hues */
         .cloud-1 { width: 500px; height: 250px; top: 10%; left: -10%; background: rgba(255, 177, 160, 0.4); animation-duration: 90s; }
         .cloud-2 { width: 600px; height: 300px; bottom: 5%; right: -20%; background: rgba(255, 234, 167, 0.3); animation-duration: 120s; }
         [data-theme="dark"] .cloud-1 { background: rgba(139, 92, 246, 0.2); }
         [data-theme="dark"] .cloud-2 { background: rgba(244, 63, 94, 0.15); }
 
         @keyframes cloudFloat {
-            0% { transform: translateX(0px) translateY(0px); }
-            50% { transform: translateX(50px) translateY(15px); }
-            100% { transform: translateX(0px) translateY(0px); }
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 15px); }
         }
 
-        /* Shooting Stars for Twilight Dark Mode */
         .star-container {
             position: fixed;
             width: 100%;
@@ -120,28 +159,56 @@
 
         .shooting-star {
             position: absolute;
-            top: 0;
-            left: 50%;
             width: 3px;
             height: 3px;
             background: #fff;
             border-radius: 50%;
-            box-shadow: 0 0 10px #fff, 0 0 20px #fff;
+            box-shadow: 0 0 10px #fff;
             animation: shooting infinite linear;
             opacity: 0;
         }
-
         .star-1 { top: 5%; left: 30%; animation-duration: 6s; animation-delay: 1s; }
         .star-2 { top: 15%; left: 70%; animation-duration: 8s; animation-delay: 4s; }
 
         @keyframes shooting {
-            0% { transform: translateX(0) translateY(0) scale(1); opacity: 0; }
+            0% { transform: translate(0,0) scale(1); opacity: 0; }
             10% { opacity: 1; }
-            30% { transform: translateX(-300px) translateY(300px) scale(0.2); opacity: 0; }
-            100% { opacity: 0; }
+            30% { transform: translate(-300px, 300px) scale(0.2); opacity: 0; }
         }
 
-        /* --- DASHBOARD CONTAINER --- */
+        .bubble-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -2;
+            display: var(--bubble-display);
+            pointer-events: none;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -50px;
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: floatUp infinite linear;
+        }
+        [data-theme="dark"] .bubble { background: rgba(0, 242, 254, 0.1); border-color: rgba(0, 242, 254, 0.3); }
+
+        .b1 { width: 40px; height: 40px; left: 15%; animation-duration: 12s; }
+        .b2 { width: 25px; height: 25px; left: 45%; animation-duration: 18s; animation-delay: 2s; }
+        .b3 { width: 50px; height: 50px; left: 75%; animation-duration: 15s; animation-delay: 5s; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.8); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+        }
+
+        /* --- CONTAINER WORKSPACE --- */
         .container {
             width: 100%;
             max-width: 1050px;
@@ -156,10 +223,40 @@
             z-index: 1;
         }
 
-        /* Anime Theme Controller Buttons */
+        .hub-navigation {
+            display: flex;
+            background: var(--card-glass);
+            border: var(--border-glass);
+            border-radius: 20px;
+            padding: 6px;
+            margin-bottom: 35px;
+            gap: 10px;
+            box-shadow: var(--card-shadow);
+            max-width: 450px;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 191, 165, 0.2);
+        }
+
         .top-controls {
             position: absolute;
-            top: 30px;
+            top: 45px;
             right: 45px;
             display: flex;
             gap: 15px;
@@ -178,23 +275,11 @@
             align-items: center;
             gap: 8px;
             box-shadow: var(--card-shadow);
-            backdrop-filter: blur(5px);
         }
 
-        .control-btn:hover {
-            transform: translateY(-2px);
-        }
+        .download-btn { background: linear-gradient(135deg, #00b894, #00cec9); color: white; border: none; }
 
-        .download-btn {
-            background: linear-gradient(135deg, #00b894, #00cec9);
-            color: white;
-            border: none;
-        }
-
-        header {
-            margin-bottom: 40px;
-        }
-
+        header { margin-bottom: 40px; }
         header h1 {
             font-family: 'Comfortaa', sans-serif;
             font-size: 36px;
@@ -205,38 +290,13 @@
             margin-bottom: 8px;
             letter-spacing: -1px;
         }
+        header p { color: var(--text-muted); font-size: 15px; font-weight: 500; }
 
-        header p {
-            color: var(--text-muted);
-            font-size: 15px;
-            font-weight: 500;
-        }
+        .setup-section { display: flex; gap: 25px; margin-bottom: 45px; align-items: flex-end; flex-wrap: wrap; }
+        .form-group { flex: 1; min-width: 200px; }
+        label { display: block; margin-bottom: 12px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
 
-        /* Input Controls Reskin */
-        .setup-section {
-            display: flex;
-            gap: 25px;
-            margin-bottom: 45px;
-            align-items: flex-end;
-            flex-wrap: wrap;
-        }
-
-        .form-group {
-            flex: 1;
-            min-width: 250px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 12px;
-            font-weight: 600;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-        }
-
-        select {
+        select, input {
             width: 100%;
             padding: 16px 22px;
             border-radius: 18px;
@@ -247,7 +307,6 @@
             font-weight: 600;
             outline: none;
             box-shadow: var(--card-shadow);
-            cursor: pointer;
         }
 
         .gen-btn {
@@ -260,25 +319,17 @@
             font-size: 15px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 191, 165, 0.2);
             transition: all 0.3s ease;
         }
+        .gen-btn:hover { transform: translateY(-3px); }
 
-        .gen-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 26px rgba(108, 92, 231, 0.45);
-        }
-
-        /* Dual Grid Workspace */
-        .results-grid {
-            display: grid;
-            grid-template-columns: 1.7fr 1.3fr;
-            gap: 35px;
-        }
+        .results-grid { display: grid; grid-template-columns: 1.7fr 1.3fr; gap: 35px; }
 
         @media (max-width: 850px) {
             .results-grid { grid-template-columns: 1fr; }
-            header { margin-top: 40px; }
+            .top-controls { position: relative; top: 0; right: 0; margin-bottom: 20px; width: 100%; justify-content: flex-end; }
+            header { margin-top: 10px; }
         }
 
         .panel {
@@ -301,168 +352,109 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Beautiful Dynamic Tables */
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 10px;
-        }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+        th { padding: 0 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; font-size: 11px; letter-spacing: 1px; }
+        td { padding: 16px; background: var(--card-glass); color: var(--text-main); font-weight: 600; font-size: 14px; border: var(--border-glass); }
 
-        th {
-            padding: 0 14px;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-size: 11px;
-            letter-spacing: 1px;
-        }
+        tr td:first-child { border-top-left-radius: 16px; border-bottom-left-radius: 16px; color: var(--accent); font-weight: 700; }
+        tr td:last-child { border-top-right-radius: 16px; border-bottom-right-radius: 16px; }
 
-        td {
-            padding: 16px;
-            background: var(--card-glass);
-            color: var(--text-main);
-            font-weight: 600;
-            font-size: 14px;
-            border: var(--border-glass);
-        }
-
-        tr td:first-child {
-            border-top-left-radius: 16px;
-            border-bottom-left-radius: 16px;
-            color: var(--accent);
-            font-weight: 700;
-        }
-        tr td:last-child {
-            border-top-right-radius: 16px;
-            border-bottom-right-radius: 16px;
-        }
-
-        /* Grid Cards for Stats */
-        .summary-list {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 16px;
-        }
-
+        .summary-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 16px; }
         .summary-list li {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 18px 14px;
-            background: var(--card-glass);
-            border-radius: 20px;
-            font-weight: 600;
-            border: var(--border-glass);
-            box-shadow: var(--card-shadow);
-            gap: 10px;
-        }
-
-        .summary-list li .name {
-            font-size: 14px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 18px 14px;
+            background: var(--card-glass); border-radius: 20px; font-weight: 600; border: var(--border-glass); box-shadow: var(--card-shadow); gap: 10px;
         }
 
         .summary-list li span.count {
-            font-weight: 800;
-            color: white;
-            background: var(--primary-gradient);
-            padding: 5px 14px;
-            border-radius: 12px;
-            font-size: 11px;
+            font-weight: 800; color: white; background: var(--primary-gradient); padding: 5px 14px; border-radius: 12px; font-size: 11px;
         }
 
-        /* Scrollbars Customization */
         .panel::-webkit-scrollbar { width: 6px; }
         .panel::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
-        [data-theme="dark"] .panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
 
-<!-- Anime Sky Animated Vectors -->
 <div class="anime-sky-bg"></div>
-<div class="anime-clouds">
-    <div class="cloud cloud-1"></div>
-    <div class="cloud cloud-2"></div>
-</div>
-<div class="star-container">
-    <div class="shooting-star star-1"></div>
-    <div class="shooting-star star-2"></div>
-</div>
+<div class="anime-clouds"><div class="cloud cloud-1"></div><div class="cloud cloud-2"></div></div>
+<div class="star-container"><div class="shooting-star star-1"></div><div class="shooting-star star-2"></div></div>
+<div class="bubble-container"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div></div>
 
 <div class="container">
-    <!-- Top Action Area -->
+    <div class="hub-navigation">
+        <button class="nav-tab active" id="tabMarket" onclick="switchMode('market')">🛒 Market Duty</button>
+        <button class="nav-tab" id="tabWashroom" onclick="switchMode('washroom')">🧼 Washroom Duty</button>
+    </div>
+
     <div class="top-controls">
-        <button class="control-btn download-btn" onclick="downloadDashboardAsImage()" id="downloadBtn" style="display: none;">
-            ✨ Export Image
-        </button>
-        <button class="control-btn" onclick="toggleTheme()" id="themeBtn">
-            🌌 Twilight UI
-        </button>
+        <button class="control-btn download-btn" onclick="downloadDashboardAsImage()" id="downloadBtn" style="display: none;">✨ Export Image</button>
+        <button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌌 Twilight UI</button>
     </div>
 
     <header>
-        <h1>Mess Marketing Hub</h1>
-        <p>Equal spell distribution engine for 11 members (2 meals/day)</p>
+        <h1 id="hubTitle">Mess Marketing Hub</h1>
+        <p id="hubSubtitle">Equal spell distribution engine for 11 members (2 meals/day)</p>
     </header>
 
     <div class="setup-section">
         <div class="form-group">
-            <label for="monthSelect">Choose Target Month</label>
+            <label for="monthSelect">Target Month</label>
             <select id="monthSelect">
-                <option value="1">🌸 January</option>
-                <option value="2">❄️ February</option>
-                <option value="3">🌱 March</option>
-                <option value="4">☀️ April</option>
-                <option value="5">🌿 May</option>
-                <option value="6">☔ June</option>
-                <option value="7">🌾 July</option>
-                <option value="8">☁️ August</option>
-                <option value="9">🍁 September</option>
-                <option value="10">🎃 October</option>
-                <option value="11">🍂 November</option>
-                <option value="12">🎄 December</option>
-            </select>
+                </select>
         </div>
+        
         <div class="form-group">
-            <button class="gen-btn" onclick="generateSchedule()">☄️ Run Distribution</button>
+            <label for="yearInput">Target Year</label>
+            <input type="number" id="yearInput" value="2026" min="2020" max="2100">
+        </div>
+
+        <div class="form-group">
+            <button class="gen-btn" id="actionBtn" onclick="generateSchedule()">☄️ Run Distribution</button>
         </div>
     </div>
 
     <div class="results-grid" id="resultsGrid" style="display: none;">
-        <!-- Left Side: Main Schedule -->
         <div class="panel" id="schedulePanel">
-            <h2>📊 Daily Duty Chart</h2>
+            <h2 id="tableHeading">📊 Daily Duty Chart</h2>
             <table>
-                <thead>
-                    <tr>
-                        <th>Day</th>
-                        <th>Lunch Duty</th>
-                        <th>Dinner Duty</th>
-                    </tr>
-                </thead>
-                <tbody id="scheduleBody">
-                    <!-- Data Rows -->
-                </tbody>
+                <thead id="tableHeader"></thead>
+                <tbody id="scheduleBody"></tbody>
             </table>
         </div>
 
-        <!-- Right Side: Summary Counter Graphic Grid -->
         <div class="panel" id="statsPanel">
-            <h2>💫 Fair Contribution Stats</h2>
-            <ul class="summary-list" id="summaryList">
-                <!-- Grid Items -->
-            </ul>
+            <h2 id="statsHeading">💫 Fair Contribution Stats</h2>
+            <ul class="summary-list" id="summaryList"></ul>
         </div>
     </div>
 </div>
 
 <script>
-    const members = [
-        "Sandip", "Sudip", "Hridoy", "Sourov", "Bishal", 
-        "Rahul", "Arup", "Prottoy", "Durjoy", "Noyon", "Hrittick"
-    ];
+    let currentMode = 'market';
+    const members = ["Sandip", "Bishal", "Durjoy", "Sudip", "Hridoy", "Prottoy", "Hrittick", "Noyon", "Arup", "Rahul", "Sourov"];
+    const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+    // Emojis mapping structures
+    const marketEmojis = ["🌸", "❄️", "🌱", "☀️", "🌿", "☔", "🌾", "☁️", "🍁", "🎃", "🍂", "🎄"];
+    const washroomEmojis = ["🧼", "🪣", "🧽", "🚿", "💧", "🌊", "🧴", "🧹", "🧊", "🫧", "💦", "🌪️"];
+
+    function populateMonthsDropdown() {
+        const select = document.getElementById("monthSelect");
+        const previousValue = select.value || "1"; // Preserve user selection if possible
+        select.innerHTML = "";
+
+        const currentEmojis = currentMode === 'market' ? marketEmojis : washroomEmojis;
+
+        for (let i = 0; i < 12; i++) {
+            const opt = document.createElement("option");
+            opt.value = i + 1;
+            opt.innerText = `${currentEmojis[i]} ${monthNames[i]}`;
+            if(String(i + 1) === previousValue) {
+                opt.selected = true;
+            }
+            select.appendChild(opt);
+        }
+    }
 
     function toggleTheme() {
         const currentTheme = document.documentElement.getAttribute("data-theme");
@@ -471,12 +463,53 @@
         document.getElementById("themeBtn").innerHTML = targetTheme === "dark" ? "☀️ Light UI" : "🌌 Twilight UI";
     }
 
-    function getDaysInMonth(month) {
-        const daysMap = {
-            1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
-            7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31
-        };
-        return daysMap[month] || 0;
+    function switchMode(mode) {
+        currentMode = mode;
+        document.getElementById("resultsGrid").style.display = "none";
+        document.getElementById("downloadBtn").style.display = "none";
+        
+        document.documentElement.setAttribute("data-ui", mode);
+
+        // Dynamically re-populate month select inputs to switch emojis
+        populateMonthsDropdown();
+
+        if(mode === 'market') {
+            document.getElementById("tabMarket").classList.add("active");
+            document.getElementById("tabWashroom").classList.remove("active");
+            document.getElementById("hubTitle").innerText = "Mess Marketing Hub";
+            document.getElementById("hubSubtitle").innerText = "Equal spell distribution engine for 11 members (2 meals/day)";
+            document.getElementById("actionBtn").innerText = "☄️ Run Distribution";
+        } else {
+            document.getElementById("tabWashroom").classList.add("active");
+            document.getElementById("tabMarket").classList.remove("active");
+            document.getElementById("hubTitle").innerText = "Washroom Cleaning Engine";
+            document.getElementById("hubSubtitle").innerText = "4-day continuous deep cleaning with balanced 10-day cycles";
+            document.getElementById("actionBtn").innerText = "🧼 Generate Cycles";
+        }
+    }
+
+    function isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 != 0) || (year % 400 === 0);
+    }
+
+    function getDaysInMonth(month, year) {
+        if (month === 2) return isLeapYear(year) ? 29 : 28;
+        if ([4, 6, 9, 11].includes(month)) return 30;
+        return 31;
+    }
+
+    function addDays(d, m, y, amt) {
+        d += amt;
+        while (d > getDaysInMonth(m, y)) {
+            d -= getDaysInMonth(m, y);
+            m++;
+            if (m > 12) { m = 1; y++; }
+        }
+        return { day: d, month: m, year: y };
+    }
+
+    function formatDate(d, m, y) {
+        return `${String(d).padStart(2, '0')} ${monthNames[m - 1]} ${y}`;
     }
 
     function shuffleArray(array) {
@@ -488,65 +521,108 @@
     }
 
     function generateSchedule() {
-        const monthSelect = document.getElementById("monthSelect");
-        const month = parseInt(monthSelect.value);
-        const days = getDaysInMonth(month);
+        const month = parseInt(document.getElementById("monthSelect").value);
+        const year = parseInt(document.getElementById("yearInput").value) || 2026;
         
-        const numMembers = members.length;
+        if(currentMode === 'market') {
+            runMarketLogic(month, year);
+        } else {
+            runWashroomLogic(month, year);
+        }
+
+        document.getElementById("resultsGrid").style.display = "grid";
+        document.getElementById("downloadBtn").style.display = "flex";
+    }
+
+    function runMarketLogic(month, year) {
+        const days = getDaysInMonth(month, year);
         const totalSlots = days * 2;
+        const numMembers = members.length;
 
-        const baseDutiesPerMember = Math.floor(totalSlots / numMembers);
+        const baseDuties = Math.floor(totalSlots / numMembers);
         const remainder = totalSlots % numMembers;
-
-        let spellLengths = new Array(numMembers).fill(baseDutiesPerMember);
+        let spellLengths = new Array(numMembers).fill(baseDuties);
 
         let indices = Array.from({length: numMembers}, (_, i) => i);
         shuffleArray(indices);
-        for (let i = 0; i < remainder; i++) {
-            spellLengths[indices[i]]++;
-        }
+        for (let i = 0; i < remainder; i++) spellLengths[indices[i]]++;
 
         let shuffledOrder = [...members];
         shuffleArray(shuffledOrder);
 
         let dutyPool = [];
         for (let i = 0; i < numMembers; i++) {
-            const currentMember = shuffledOrder[i];
-            const personalTotalDuty = spellLengths[i];
-            for (let j = 0; j < personalTotalDuty; j++) {
-                dutyPool.push(currentMember);
-            }
+            for (let j = 0; j < spellLengths[i]; j++) dutyPool.push(shuffledOrder[i]);
         }
 
-        // Render Data
-        const scheduleBody = document.getElementById("scheduleBody");
-        scheduleBody.innerHTML = "";
+        document.getElementById("tableHeading").innerText = "📋 Daily Marketing Chart";
+        document.getElementById("tableHeader").innerHTML = `<tr><th>Day</th><th>Lunch Duty</th><th>Dinner Duty</th></tr>`;
+        
+        const body = document.getElementById("scheduleBody");
+        body.innerHTML = "";
         let poolIndex = 0;
-        for (let day = 1; day <= days; day++) {
-            const row = `<tr>
-                <td>Day ${day}</td>
+        for (let d = 1; d <= days; d++) {
+            body.insertAdjacentHTML('beforeend', `<tr>
+                <td>Day ${d}</td>
                 <td>${dutyPool[poolIndex++]}</td>
                 <td>${dutyPool[poolIndex++]}</td>
-            </tr>`;
-            scheduleBody.insertAdjacentHTML('beforeend', row);
+            </tr>`);
         }
 
-        const summaryList = document.getElementById("summaryList");
-        summaryList.innerHTML = "";
+        document.getElementById("statsHeading").innerText = "💫 Market Contribution Stats";
+        const statsList = document.getElementById("summaryList");
+        statsList.innerHTML = "";
         let counts = {};
         members.forEach(m => counts[m] = 0);
         dutyPool.forEach(m => counts[m]++);
-
-        members.forEach(member => {
-            const listItem = `<li>
-                <div class="name">${member}</div>
-                <span class="count">${counts[member]} Meals</span>
-            </li>`;
-            summaryList.insertAdjacentHTML('beforeend', listItem);
+        members.forEach(m => {
+            statsList.insertAdjacentHTML('beforeend', `<li><div class="name">${m}</div><span class="count">${counts[m]} Meals</span></li>`);
         });
+    }
 
-        document.getElementById("resultsGrid").style.display = "grid";
-        document.getElementById("downloadBtn").style.display = "flex";
+    function runWashroomLogic(startMonth, startYear) {
+        let memberObjects = members.map(name => ({ name: name, cleaned: 0 }));
+        let currentDay = 1, currentMonth = startMonth, currentYear = startYear;
+
+        const cleanDays = 4, totalCycle = 10, roundsToShow = 2;
+
+        document.getElementById("tableHeading").innerText = "🧼 Cycle Timeline (4 Days Active)";
+        document.getElementById("tableHeader").innerHTML = `<tr><th>Round / Order</th><th>Timeline Duration</th><th>Assigned Partners</th></tr>`;
+        
+        const body = document.getElementById("scheduleBody");
+        body.innerHTML = "";
+
+        for (let round = 1; round <= roundsToShow; round++) {
+            let minClean = Math.min(...memberObjects.map(m => m.cleaned));
+            let eligibleIndices = [];
+            memberObjects.forEach((m, idx) => { if(m.cleaned === minClean) eligibleIndices.push(idx); });
+
+            shuffleArray(eligibleIndices);
+            if (eligibleIndices.length % 2 === 1) { eligibleIndices.push(eligibleIndices[0]); }
+
+            for (let i = 0; i + 1 < eligibleIndices.length; i += 2) {
+                let a = eligibleIndices[i], b = eligibleIndices[i + 1];
+                let startD = currentDay, startM = currentMonth, startY = currentYear;
+                let endDateObj = addDays(startD, startM, startY, cleanDays - 1);
+
+                body.insertAdjacentHTML('beforeend', `<tr>
+                    <td>R${round} • Pair ${(i/2)+1}</td>
+                    <td>${formatDate(startD, startM, startY)} <br>➔ ${formatDate(endDateObj.day, endDateObj.month, endDateObj.year)}</td>
+                    <td>✨ <strong>${memberObjects[a].name}</strong> & <strong>${memberObjects[b].name}</strong></td>
+                </tr>`);
+
+                memberObjects[a].cleaned++; memberObjects[b].cleaned++;
+                let nextCycleDate = addDays(currentDay, currentMonth, currentYear, totalCycle);
+                currentDay = nextCycleDate.day; currentMonth = nextCycleDate.month; currentYear = nextCycleDate.year;
+            }
+        }
+
+        document.getElementById("statsHeading").innerText = "🌟 Total Round Scorecard";
+        const statsList = document.getElementById("summaryList");
+        statsList.innerHTML = "";
+        memberObjects.forEach(m => {
+            statsList.insertAdjacentHTML('beforeend', `<li><div class="name">${m.name}</div><span class="count">${m.cleaned} Cycles</span></li>`);
+        });
     }
 
     function downloadDashboardAsImage() {
@@ -554,27 +630,32 @@
         const sPanel = document.getElementById("schedulePanel");
         const stPanel = document.getElementById("statsPanel");
         
-        const oldS = sPanel.style.maxHeight;
-        const oldSt = stPanel.style.maxHeight;
-        sPanel.style.maxHeight = "none";
-        stPanel.style.maxHeight = "none";
+        const oldS = sPanel.style.maxHeight; const oldSt = stPanel.style.maxHeight;
+        sPanel.style.maxHeight = "none"; stPanel.style.maxHeight = "none";
 
         const currentTheme = document.documentElement.getAttribute("data-theme");
+        let bgColor = currentTheme === "dark" ? "#1a0b2e" : "#fab1a0";
+        if(currentMode === 'washroom') {
+            bgColor = currentTheme === "dark" ? "#031f24" : "#b2dfdb";
+        }
 
         html2canvas(resultsGrid, {
-            backgroundColor: currentTheme === "dark" ? "#1a0b2e" : "#fab1a0",
+            backgroundColor: bgColor,
             scale: 2,
             useCORS: true
         }).then(canvas => {
-            sPanel.style.maxHeight = oldS;
-            stPanel.style.maxHeight = oldSt;
-
+            sPanel.style.maxHeight = oldS; stPanel.style.maxHeight = oldSt;
             const link = document.createElement("a");
             link.href = canvas.toDataURL("image/png");
-            link.download = `Anime_Mess_Schedule_2026.png`;
+            link.download = `${currentMode === 'market' ? 'Market' : 'Washroom'}_Schedule_2026.png`;
             link.click();
         });
     }
+
+    // Initialize application dropdown on load
+    window.onload = function() {
+        populateMonthsDropdown();
+    };
 </script>
 
 </body>
