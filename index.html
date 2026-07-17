@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,12 +20,12 @@
             --primary-gradient: linear-gradient(135deg, #0984e3, #6c5ce7);
             --accent: #e17055;
             --neon-glow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
-            --card-shadow: inset 2px 2px 5px rgba(255,255,255,0.5), 4px 4px 15px rgba(0,0,0,0.05);
+            --card-shadow: inset 1px 1px 3px rgba(255,255,255,0.5), 0 4px 15px rgba(0,0,0,0.04);
             
-            /* Background Element Toggles */
             --cloud-opacity: 0.85;
             --star-display: none;
             --bubble-display: none;
+            --card-bg-duty: rgba(255, 255, 255, 0.8);
         }
 
         [data-theme="dark"] {
@@ -45,6 +45,7 @@
             --cloud-opacity: 0.4;
             --star-display: block;
             --bubble-display: none;
+            --card-bg-duty: rgba(35, 28, 64, 0.8);
         }
 
         /* --- WASHROOM MODE OVERRIDES (LIGHT) --- */
@@ -64,6 +65,7 @@
             --cloud-opacity: 0;
             --star-display: none;
             --bubble-display: block;
+            --card-bg-duty: rgba(255, 255, 255, 0.9);
         }
 
         /* --- WASHROOM MODE OVERRIDES (DARK) --- */
@@ -83,6 +85,7 @@
             --cloud-opacity: 0;
             --star-display: none;
             --bubble-display: block;
+            --card-bg-duty: rgba(12, 53, 59, 0.85);
         }
 
         * {
@@ -90,7 +93,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Poppins', sans-serif;
-            transition: background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
+            transition: background 0.4s ease, border 0.4s ease, box-shadow 0.4s ease, color 0.4s ease;
         }
 
         body {
@@ -100,7 +103,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 40px 20px;
+            padding: clamp(10px, 3vw, 40px) 15px;
             overflow-x: hidden;
             position: relative;
         }
@@ -114,7 +117,6 @@
             height: 100vh;
             background: var(--anime-sky);
             z-index: -3;
-            transition: background 0.8s ease;
         }
 
         .anime-clouds {
@@ -126,24 +128,23 @@
             z-index: -2;
             pointer-events: none;
             opacity: var(--cloud-opacity);
-            transition: opacity 0.5s ease;
         }
 
         .cloud {
             position: absolute;
             background: rgba(255, 255, 255, 0.35);
-            filter: blur(30px);
+            filter: blur(35px);
             border-radius: 50%;
             animation: cloudFloat infinite linear;
         }
-        .cloud-1 { width: 500px; height: 250px; top: 10%; left: -10%; background: rgba(255, 177, 160, 0.4); animation-duration: 90s; }
-        .cloud-2 { width: 600px; height: 300px; bottom: 5%; right: -20%; background: rgba(255, 234, 167, 0.3); animation-duration: 120s; }
-        [data-theme="dark"] .cloud-1 { background: rgba(139, 92, 246, 0.2); }
-        [data-theme="dark"] .cloud-2 { background: rgba(244, 63, 94, 0.15); }
+        .cloud-1 { width: 450px; height: 220px; top: 10%; left: -5%; background: rgba(255, 177, 160, 0.35); animation-duration: 90s; }
+        .cloud-2 { width: 550px; height: 280px; bottom: 5%; right: -10%; background: rgba(255, 234, 167, 0.25); animation-duration: 120s; }
+        [data-theme="dark"] .cloud-1 { background: rgba(139, 92, 246, 0.15); }
+        [data-theme="dark"] .cloud-2 { background: rgba(244, 63, 94, 0.1); }
 
         @keyframes cloudFloat {
             0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(50px, 15px); }
+            50% { transform: translate(40px, 15px); }
         }
 
         .star-container {
@@ -167,13 +168,13 @@
             animation: shooting infinite linear;
             opacity: 0;
         }
-        .star-1 { top: 5%; left: 30%; animation-duration: 6s; animation-delay: 1s; }
-        .star-2 { top: 15%; left: 70%; animation-duration: 8s; animation-delay: 4s; }
+        .star-1 { top: 7%; left: 25%; animation-duration: 7s; animation-delay: 1s; }
+        .star-2 { top: 18%; left: 65%; animation-duration: 9s; animation-delay: 4s; }
 
         @keyframes shooting {
             0% { transform: translate(0,0) scale(1); opacity: 0; }
-            10% { opacity: 1; }
-            30% { transform: translate(-300px, 300px) scale(0.2); opacity: 0; }
+            8% { opacity: 1; }
+            28% { transform: translate(-250px, 250px) scale(0.3); opacity: 0; }
         }
 
         .bubble-container {
@@ -190,120 +191,143 @@
         .bubble {
             position: absolute;
             bottom: -50px;
-            background: rgba(255, 255, 255, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.35);
             border-radius: 50%;
             animation: floatUp infinite linear;
         }
-        [data-theme="dark"] .bubble { background: rgba(0, 242, 254, 0.1); border-color: rgba(0, 242, 254, 0.3); }
+        [data-theme="dark"] .bubble { background: rgba(0, 242, 254, 0.08); border-color: rgba(0, 242, 254, 0.25); }
 
-        .b1 { width: 40px; height: 40px; left: 15%; animation-duration: 12s; }
-        .b2 { width: 25px; height: 25px; left: 45%; animation-duration: 18s; animation-delay: 2s; }
-        .b3 { width: 50px; height: 50px; left: 75%; animation-duration: 15s; animation-delay: 5s; }
+        .b1 { width: 35px; height: 35px; left: 10%; animation-duration: 13s; }
+        .b2 { width: 20px; height: 20px; left: 45%; animation-duration: 17s; animation-delay: 1.5s; }
+        .b3 { width: 45px; height: 45px; left: 80%; animation-duration: 14s; animation-delay: 4s; }
 
         @keyframes floatUp {
             0% { transform: translateY(0) scale(0.8); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 0.8; }
-            100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+            100% { transform: translateY(-110vh) scale(1.1); opacity: 0; }
         }
 
         /* --- CONTAINER WORKSPACE --- */
         .container {
             width: 100%;
-            max-width: 1050px;
+            max-width: 1150px;
             background: var(--panel-glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: var(--border-glass);
-            border-radius: 32px;
-            padding: 45px;
+            border-radius: 28px;
+            padding: clamp(15px, 4vw, 40px);
             box-shadow: var(--neon-glow);
             position: relative;
             z-index: 1;
+        }
+
+        .header-top-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
         .hub-navigation {
             display: flex;
             background: var(--card-glass);
             border: var(--border-glass);
-            border-radius: 20px;
-            padding: 6px;
-            margin-bottom: 35px;
-            gap: 10px;
+            border-radius: 16px;
+            padding: 5px;
+            gap: 5px;
             box-shadow: var(--card-shadow);
-            max-width: 450px;
+            width: 100%;
+            max-width: 420px;
         }
 
         .nav-tab {
             flex: 1;
-            padding: 12px 20px;
+            padding: 10px 15px;
             border: none;
             background: transparent;
             color: var(--text-main);
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
-            border-radius: 14px;
-            transition: all 0.3s ease;
+            border-radius: 12px;
+            white-space: nowrap;
         }
 
         .nav-tab.active {
             background: var(--primary-gradient);
             color: white;
-            box-shadow: 0 4px 15px rgba(0, 191, 165, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 191, 165, 0.15);
         }
 
         .top-controls {
-            position: absolute;
-            top: 45px;
-            right: 45px;
             display: flex;
-            gap: 15px;
+            gap: 10px;
         }
 
         .control-btn {
             background: var(--card-glass);
             border: var(--border-glass);
             color: var(--text-main);
-            padding: 12px 20px;
-            border-radius: 16px;
+            padding: 10px 18px;
+            border-radius: 14px;
             cursor: pointer;
             font-weight: 600;
             font-size: 13px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             box-shadow: var(--card-shadow);
         }
 
-        .download-btn { background: linear-gradient(135deg, #00b894, #00cec9); color: white; border: none; }
+        .control-btn:hover {
+            transform: translateY(-1px);
+        }
 
-        header { margin-bottom: 40px; }
+        .download-btn { background: linear-gradient(135deg, #00b894, #00cec9); color: white; border: none; }
+        .download-btn:hover { background: linear-gradient(135deg, #00cec9, #00b894); }
+
+        header { margin-bottom: clamp(20px, 4vw, 35px); }
         header h1 {
             font-family: 'Comfortaa', sans-serif;
-            font-size: 36px;
+            font-size: clamp(22px, 5vw, 32px);
             font-weight: 700;
             background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-            letter-spacing: -1px;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
         }
-        header p { color: var(--text-muted); font-size: 15px; font-weight: 500; }
+        header p { color: var(--text-muted); font-size: clamp(12px, 2vw, 14px); font-weight: 500; }
 
-        .setup-section { display: flex; gap: 25px; margin-bottom: 45px; align-items: flex-end; flex-wrap: wrap; }
-        .form-group { flex: 1; min-width: 200px; }
-        label { display: block; margin-bottom: 12px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+        /* Compact Parameter Setup Bar */
+        .setup-section { 
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px; 
+            margin-bottom: 30px; 
+            align-items: end;
+        }
+
+        @media (max-width: 650px) {
+            .setup-section { grid-template-columns: 1fr; }
+        }
+
+        .form-group { width: 100%; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
 
         select, input {
             width: 100%;
-            padding: 16px 22px;
-            border-radius: 18px;
+            padding: 12px 16px;
+            border-radius: 12px;
             border: var(--border-glass);
             background: var(--card-glass);
             color: var(--text-main);
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             outline: none;
             box-shadow: var(--card-shadow);
@@ -311,66 +335,249 @@
 
         .gen-btn {
             width: 100%;
-            padding: 16px 22px;
-            border-radius: 18px;
+            padding: 12px 16px;
+            border-radius: 12px;
             border: none;
             background: var(--primary-gradient);
             color: white;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(0, 191, 165, 0.2);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 191, 165, 0.15);
         }
-        .gen-btn:hover { transform: translateY(-3px); }
+        .gen-btn:hover { transform: translateY(-1px); }
 
-        .results-grid { display: grid; grid-template-columns: 1.7fr 1.3fr; gap: 35px; }
-
-        @media (max-width: 850px) {
-            .results-grid { grid-template-columns: 1fr; }
-            .top-controls { position: relative; top: 0; right: 0; margin-bottom: 20px; width: 100%; justify-content: flex-end; }
-            header { margin-top: 10px; }
+        /* Unified Layout grid (Web) */
+        .results-grid { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 25px; 
         }
 
-        .panel {
-            background: var(--panel-glass);
-            border-radius: 26px;
-            padding: 30px;
+        .panel-stats {
+            background: var(--card-glass);
+            border-radius: 20px;
+            padding: 22px;
             border: var(--border-glass);
             box-shadow: var(--card-shadow);
-            max-height: 620px;
-            overflow-y: auto;
         }
 
-        .panel h2 {
+        .panel-stats h2 {
             font-family: 'Comfortaa', sans-serif;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 25px;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 18px;
+            color: var(--text-main);
         }
 
-        table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
-        th { padding: 0 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; font-size: 11px; letter-spacing: 1px; }
-        td { padding: 16px; background: var(--card-glass); color: var(--text-main); font-weight: 600; font-size: 14px; border: var(--border-glass); }
-
-        tr td:first-child { border-top-left-radius: 16px; border-bottom-left-radius: 16px; color: var(--accent); font-weight: 700; }
-        tr td:last-child { border-top-right-radius: 16px; border-bottom-right-radius: 16px; }
-
-        .summary-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 16px; }
+        .summary-list { 
+            list-style: none; 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); 
+            gap: 12px; 
+        }
+        
         .summary-list li {
-            display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 18px 14px;
-            background: var(--card-glass); border-radius: 20px; font-weight: 600; border: var(--border-glass); box-shadow: var(--card-shadow); gap: 10px;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            padding: 12px 14px;
+            background: var(--bg-base); 
+            border-radius: 14px; 
+            border: var(--border-glass); 
+            box-shadow: var(--card-shadow);
+            min-height: 70px;
+        }
+
+        .summary-list li .name {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-main);
         }
 
         .summary-list li span.count {
-            font-weight: 800; color: white; background: var(--primary-gradient); padding: 5px 14px; border-radius: 12px; font-size: 11px;
+            align-self: flex-start;
+            font-weight: 800; 
+            color: white; 
+            background: var(--primary-gradient); 
+            padding: 3px 8px; 
+            border-radius: 8px; 
+            font-size: 10px;
+            margin-top: 6px;
         }
 
-        .panel::-webkit-scrollbar { width: 6px; }
-        .panel::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        /* Schedule Calendar Section */
+        .panel-schedule {
+            background: var(--card-glass);
+            border-radius: 20px;
+            padding: 22px;
+            border: var(--border-glass);
+            box-shadow: var(--card-shadow);
+        }
+
+        .panel-schedule h2 {
+            font-family: 'Comfortaa', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            color: var(--text-main);
+        }
+
+        /* Responsive Duty Card Grid for Web Screen */
+        .schedule-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .duty-card {
+            background: var(--card-bg-duty);
+            border: var(--border-glass);
+            border-radius: 14px;
+            padding: 12px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .duty-card .card-header-day {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--accent);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 3px;
+            margin-bottom: 2px;
+        }
+
+        .duty-item-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .duty-item-row .icon-lbl {
+            font-size: 13px;
+        }
+
+        .duty-item-row .name-lbl {
+            color: var(--text-main);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* --- HIGH RESOLUTION TEMPORARY CAPTURE TEMPLATE --- */
+        #exportCanvasContainer {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+            width: 1200px;
+            padding: 40px;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            color: var(--text-main);
+            box-sizing: border-box;
+        }
+
+        #exportCanvasContainer .export-header {
+            text-align: center;
+            border-bottom: 2px dashed rgba(255, 255, 255, 0.3);
+            padding-bottom: 20px;
+        }
+
+        #exportCanvasContainer .export-header h1 {
+            font-family: 'Comfortaa', sans-serif;
+            font-size: 40px;
+            color: #fff;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        #exportCanvasContainer .export-header p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 5px;
+        }
+
+        #exportCanvasContainer .export-section-title {
+            font-family: 'Comfortaa', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        #exportCanvasContainer .export-grid-wrapper {
+            background: rgba(15, 10, 32, 0.45);
+            backdrop-filter: blur(20px);
+            border: var(--border-glass);
+            border-radius: 18px;
+            padding: 25px;
+        }
+
+        #exportCanvasContainer .export-stats-list {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        #exportCanvasContainer .export-stats-item {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        #exportCanvasContainer .export-stats-item .name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        #exportCanvasContainer .export-stats-item .count {
+            display: inline-block;
+            background: #fff;
+            color: #2d3436;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 6px;
+            margin-top: 6px;
+        }
+
+        #exportCanvasContainer .export-schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        #exportCanvasContainer .export-day-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 10px;
+            color: #2d3436;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        #exportCanvasContainer .export-day-card .day-num {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--accent);
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding-bottom: 3px;
+            margin-bottom: 4px;
+        }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -381,14 +588,16 @@
 <div class="bubble-container"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div></div>
 
 <div class="container">
-    <div class="hub-navigation">
-        <button class="nav-tab active" id="tabMarket" onclick="switchMode('market')">🛒 Market Duty</button>
-        <button class="nav-tab" id="tabWashroom" onclick="switchMode('washroom')">🧼 Washroom Duty</button>
-    </div>
+    <div class="header-top-group">
+        <div class="hub-navigation">
+            <button class="nav-tab active" id="tabMarket" onclick="switchMode('market')">🛒 Market Duty</button>
+            <button class="nav-tab" id="tabWashroom" onclick="switchMode('washroom')">🧼 Washroom Duty</button>
+        </div>
 
-    <div class="top-controls">
-        <button class="control-btn download-btn" onclick="downloadDashboardAsImage()" id="downloadBtn" style="display: none;">✨ Export Image</button>
-        <button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌌 Twilight UI</button>
+        <div class="top-controls">
+            <button class="control-btn download-btn hidden" onclick="downloadDashboardAsImage()" id="downloadBtn">✨ Export Image</button>
+            <button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌌 Twilight UI</button>
+        </div>
     </div>
 
     <header>
@@ -399,8 +608,7 @@
     <div class="setup-section">
         <div class="form-group">
             <label for="monthSelect">Target Month</label>
-            <select id="monthSelect">
-                </select>
+            <select id="monthSelect"></select>
         </div>
         
         <div class="form-group">
@@ -413,19 +621,34 @@
         </div>
     </div>
 
-    <div class="results-grid" id="resultsGrid" style="display: none;">
-        <div class="panel" id="schedulePanel">
-            <h2 id="tableHeading">📊 Daily Duty Chart</h2>
-            <table>
-                <thead id="tableHeader"></thead>
-                <tbody id="scheduleBody"></tbody>
-            </table>
-        </div>
-
-        <div class="panel" id="statsPanel">
+    <div class="results-grid hidden" id="resultsGrid">
+        <!-- Live Statistics Panel -->
+        <div class="panel-stats">
             <h2 id="statsHeading">💫 Fair Contribution Stats</h2>
             <ul class="summary-list" id="summaryList"></ul>
         </div>
+
+        <!-- Live Calendar Card Grid -->
+        <div class="panel-schedule">
+            <h2 id="tableHeading">📅 Duty Chart Calendar</h2>
+            <div class="schedule-cards-grid" id="scheduleCardsBody"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TEMPORARY HIDDEN EXPORT CANVAS FOR HIGH-RES DOWNLOADS -->
+<div id="exportCanvasContainer">
+    <div class="export-header">
+        <h1 id="exportTitle">Mess Duty Chart</h1>
+        <p id="exportSubtitle">Balanced and equal task distribution system</p>
+    </div>
+    <div class="export-grid-wrapper">
+        <div class="export-section-title" id="exportStatsHeader">📊 Roster Statistics</div>
+        <div class="export-stats-list" id="exportStatsList"></div>
+    </div>
+    <div class="export-grid-wrapper">
+        <div class="export-section-title" id="exportScheduleHeader">📅 Scheduled Calendar Days</div>
+        <div class="export-schedule-grid" id="exportScheduleGrid"></div>
     </div>
 </div>
 
@@ -434,15 +657,19 @@
     const members = ["Sandip", "Bishal", "Durjoy", "Sudip", "Hridoy", "Prottoy", "Hrittick", "Noyon", "Arup", "Rahul", "Sourov"];
     const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
+    // Global arrays to preserve state for high-res exporter
+    let processedDutyData = []; 
+    let finalStatsCounts = {};
+    let activeMonthLabel = "";
+
     // Emojis mapping structures
     const marketEmojis = ["🌸", "❄️", "🌱", "☀️", "🌿", "☔", "🌾", "☁️", "🍁", "🎃", "🍂", "🎄"];
     const washroomEmojis = ["🧼", "🪣", "🧽", "🚿", "💧", "🌊", "🧴", "🧹", "🧊", "🫧", "💦", "🌪️"];
 
     function populateMonthsDropdown() {
         const select = document.getElementById("monthSelect");
-        const previousValue = select.value || "1"; // Preserve user selection if possible
+        const previousValue = select.value || "1"; 
         select.innerHTML = "";
-
         const currentEmojis = currentMode === 'market' ? marketEmojis : washroomEmojis;
 
         for (let i = 0; i < 12; i++) {
@@ -465,12 +692,10 @@
 
     function switchMode(mode) {
         currentMode = mode;
-        document.getElementById("resultsGrid").style.display = "none";
-        document.getElementById("downloadBtn").style.display = "none";
-        
+        document.getElementById("resultsGrid").classList.add("hidden");
+        document.getElementById("downloadBtn").classList.add("hidden");
         document.documentElement.setAttribute("data-ui", mode);
 
-        // Dynamically re-populate month select inputs to switch emojis
         populateMonthsDropdown();
 
         if(mode === 'market') {
@@ -509,7 +734,7 @@
     }
 
     function formatDate(d, m, y) {
-        return `${String(d).padStart(2, '0')} ${monthNames[m - 1]} ${y}`;
+        return `${String(d).padStart(2, '0')} ${monthNames[m - 1]}`;
     }
 
     function shuffleArray(array) {
@@ -523,6 +748,8 @@
     function generateSchedule() {
         const month = parseInt(document.getElementById("monthSelect").value);
         const year = parseInt(document.getElementById("yearInput").value) || 2026;
+        const selectEl = document.getElementById("monthSelect");
+        activeMonthLabel = selectEl.options[selectEl.selectedIndex].text;
         
         if(currentMode === 'market') {
             runMarketLogic(month, year);
@@ -530,8 +757,8 @@
             runWashroomLogic(month, year);
         }
 
-        document.getElementById("resultsGrid").style.display = "grid";
-        document.getElementById("downloadBtn").style.display = "flex";
+        document.getElementById("resultsGrid").classList.remove("hidden");
+        document.getElementById("downloadBtn").classList.remove("hidden");
     }
 
     function runMarketLogic(month, year) {
@@ -555,28 +782,50 @@
             for (let j = 0; j < spellLengths[i]; j++) dutyPool.push(shuffledOrder[i]);
         }
 
-        document.getElementById("tableHeading").innerText = "📋 Daily Marketing Chart";
-        document.getElementById("tableHeader").innerHTML = `<tr><th>Day</th><th>Lunch Duty</th><th>Dinner Duty</th></tr>`;
-        
-        const body = document.getElementById("scheduleBody");
-        body.innerHTML = "";
+        processedDutyData = [];
         let poolIndex = 0;
         for (let d = 1; d <= days; d++) {
-            body.insertAdjacentHTML('beforeend', `<tr>
-                <td>Day ${d}</td>
-                <td>${dutyPool[poolIndex++]}</td>
-                <td>${dutyPool[poolIndex++]}</td>
-            </tr>`);
+            processedDutyData.push({
+                type: 'market',
+                dayText: `Day ${d}`,
+                lunch: dutyPool[poolIndex++],
+                dinner: dutyPool[poolIndex++]
+            });
         }
 
+        // Stats Calc
+        finalStatsCounts = {};
+        members.forEach(m => finalStatsCounts[m] = 0);
+        dutyPool.forEach(m => finalStatsCounts[m]++);
+
+        // Web view display
+        document.getElementById("tableHeading").innerText = "📋 Daily Marketing Grid View";
         document.getElementById("statsHeading").innerText = "💫 Market Contribution Stats";
+        
+        const scheduleCardsBody = document.getElementById("scheduleCardsBody");
+        scheduleCardsBody.innerHTML = "";
+
+        processedDutyData.forEach(item => {
+            const card = `
+                <div class="duty-card">
+                    <div class="card-header-day">${item.dayText}</div>
+                    <div class="duty-item-row">
+                        <span class="icon-lbl">☀️</span>
+                        <span class="name-lbl" title="${item.lunch}">${item.lunch}</span>
+                    </div>
+                    <div class="duty-item-row">
+                        <span class="icon-lbl">🌙</span>
+                        <span class="name-lbl" title="${item.dinner}">${item.dinner}</span>
+                    </div>
+                </div>
+            `;
+            scheduleCardsBody.insertAdjacentHTML('beforeend', card);
+        });
+
         const statsList = document.getElementById("summaryList");
         statsList.innerHTML = "";
-        let counts = {};
-        members.forEach(m => counts[m] = 0);
-        dutyPool.forEach(m => counts[m]++);
         members.forEach(m => {
-            statsList.insertAdjacentHTML('beforeend', `<li><div class="name">${m}</div><span class="count">${counts[m]} Meals</span></li>`);
+            statsList.insertAdjacentHTML('beforeend', `<li><div class="name">${m}</div><span class="count">${finalStatsCounts[m]} Duties</span></li>`);
         });
     }
 
@@ -586,11 +835,7 @@
 
         const cleanDays = 4, totalCycle = 10, roundsToShow = 2;
 
-        document.getElementById("tableHeading").innerText = "🧼 Cycle Timeline (4 Days Active)";
-        document.getElementById("tableHeader").innerHTML = `<tr><th>Round / Order</th><th>Timeline Duration</th><th>Assigned Partners</th></tr>`;
-        
-        const body = document.getElementById("scheduleBody");
-        body.innerHTML = "";
+        processedDutyData = [];
 
         for (let round = 1; round <= roundsToShow; round++) {
             let minClean = Math.min(...memberObjects.map(m => m.cleaned));
@@ -600,24 +845,55 @@
             shuffleArray(eligibleIndices);
             if (eligibleIndices.length % 2 === 1) { eligibleIndices.push(eligibleIndices[0]); }
 
-            for (let i = 0; i + 1 < eligibleIndices.length; i += 2) {
+            for (let i = 0; i < eligibleIndices.length; i += 2) {
                 let a = eligibleIndices[i], b = eligibleIndices[i + 1];
                 let startD = currentDay, startM = currentMonth, startY = currentYear;
                 let endDateObj = addDays(startD, startM, startY, cleanDays - 1);
 
-                body.insertAdjacentHTML('beforeend', `<tr>
-                    <td>R${round} • Pair ${(i/2)+1}</td>
-                    <td>${formatDate(startD, startM, startY)} <br>➔ ${formatDate(endDateObj.day, endDateObj.month, endDateObj.year)}</td>
-                    <td>✨ <strong>${memberObjects[a].name}</strong> & <strong>${memberObjects[b].name}</strong></td>
-                </tr>`);
+                processedDutyData.push({
+                    type: 'washroom',
+                    roundText: `R${round} • Pair ${(i/2)+1}`,
+                    durationText: `${formatDate(startD, startM, startY)} ➔ ${formatDate(endDateObj.day, endDateObj.month, endDateObj.year)}`,
+                    partnerA: memberObjects[a].name,
+                    partnerB: memberObjects[b].name
+                });
 
-                memberObjects[a].cleaned++; memberObjects[b].cleaned++;
+                memberObjects[a].cleaned++; 
+                memberObjects[b].cleaned++;
                 let nextCycleDate = addDays(currentDay, currentMonth, currentYear, totalCycle);
-                currentDay = nextCycleDate.day; currentMonth = nextCycleDate.month; currentYear = nextCycleDate.year;
+                currentDay = nextCycleDate.day; 
+                currentMonth = nextCycleDate.month; 
+                currentYear = nextCycleDate.year;
             }
         }
 
+        finalStatsCounts = {};
+        memberObjects.forEach(m => finalStatsCounts[m.name] = m.cleaned);
+
+        document.getElementById("tableHeading").innerText = "🧼 Cycle Cards (4 Days Active Duty)";
         document.getElementById("statsHeading").innerText = "🌟 Total Round Scorecard";
+
+        const scheduleCardsBody = document.getElementById("scheduleCardsBody");
+        scheduleCardsBody.innerHTML = "";
+
+        processedDutyData.forEach(item => {
+            const card = `
+                <div class="duty-card">
+                    <div class="card-header-day" style="color: var(--accent);">${item.roundText}</div>
+                    <div style="font-size: 10px; opacity: 0.8; margin-bottom: 5px;">${item.durationText}</div>
+                    <div class="duty-item-row">
+                        <span class="icon-lbl">✨</span>
+                        <span class="name-lbl" style="font-weight:700;">${item.partnerA}</span>
+                    </div>
+                    <div class="duty-item-row">
+                        <span class="icon-lbl">✨</span>
+                        <span class="name-lbl" style="font-weight:700;">${item.partnerB}</span>
+                    </div>
+                </div>
+            `;
+            scheduleCardsBody.insertAdjacentHTML('beforeend', card);
+        });
+
         const statsList = document.getElementById("summaryList");
         statsList.innerHTML = "";
         memberObjects.forEach(m => {
@@ -626,25 +902,84 @@
     }
 
     function downloadDashboardAsImage() {
-        const resultsGrid = document.getElementById("resultsGrid");
-        const sPanel = document.getElementById("schedulePanel");
-        const stPanel = document.getElementById("statsPanel");
-        
-        const oldS = sPanel.style.maxHeight; const oldSt = stPanel.style.maxHeight;
-        sPanel.style.maxHeight = "none"; stPanel.style.maxHeight = "none";
+        // Step 1: Render values dynamically in high-res hidden template in memory
+        const exportTitle = document.getElementById("exportTitle");
+        const exportSubtitle = document.getElementById("exportSubtitle");
+        const exportStatsList = document.getElementById("exportStatsList");
+        const exportScheduleGrid = document.getElementById("exportScheduleGrid");
 
-        const currentTheme = document.documentElement.getAttribute("data-theme");
-        let bgColor = currentTheme === "dark" ? "#1a0b2e" : "#fab1a0";
-        if(currentMode === 'washroom') {
-            bgColor = currentTheme === "dark" ? "#031f24" : "#b2dfdb";
+        if(currentMode === 'market') {
+            exportTitle.innerText = `Mess Marketing Schedule`;
+            exportSubtitle.innerText = `Duty distribution roster for ${activeMonthLabel} 2026 (2 meals/day)`;
+            document.getElementById("exportStatsHeader").innerText = "📊 Market Contribution Stats";
+            document.getElementById("exportScheduleHeader").innerText = "📅 Assigned Daily Calendar Grid";
+        } else {
+            exportTitle.innerText = `Washroom Deep Cleaning Schedule`;
+            exportSubtitle.innerText = `Balanced 10-day cycles beginning ${activeMonthLabel} 2026`;
+            document.getElementById("exportStatsHeader").innerText = "🌟 Total Round Scorecard";
+            document.getElementById("exportScheduleHeader").innerText = "🧼 Active Cycle Timeline Cards";
         }
 
-        html2canvas(resultsGrid, {
-            backgroundColor: bgColor,
+        // Render stats on hidden sheet
+        exportStatsList.innerHTML = "";
+        members.forEach(member => {
+            const textValue = currentMode === 'market' ? `${finalStatsCounts[member]} Meals` : `${finalStatsCounts[member]} Cycles`;
+            const statsItem = `
+                <div class="export-stats-item">
+                    <div class="name">${member}</div>
+                    <div class="count">${textValue}</div>
+                </div>
+            `;
+            exportStatsList.insertAdjacentHTML('beforeend', statsItem);
+        });
+
+        // Render cards on hidden grid sheet
+        exportScheduleGrid.innerHTML = "";
+        processedDutyData.forEach(item => {
+            let cardTemplate = "";
+            if(item.type === 'market') {
+                cardTemplate = `
+                    <div class="export-day-card">
+                        <div class="day-num">${item.dayText}</div>
+                        <div class="duty-item-row" style="color: #2d3436; margin-bottom: 4px;">
+                            <span>☀️</span> <strong style="margin-left: 4px; font-size: 11px;">${item.lunch}</strong>
+                        </div>
+                        <div class="duty-item-row" style="color: #2d3436;">
+                            <span>🌙</span> <strong style="margin-left: 4px; font-size: 11px;">${item.dinner}</strong>
+                        </div>
+                    </div>
+                `;
+            } else {
+                cardTemplate = `
+                    <div class="export-day-card" style="border-left: 3px solid #00bfa5;">
+                        <div class="day-num" style="color: #00bfa5;">${item.roundText}</div>
+                        <div style="font-size: 9px; opacity: 0.7; color: #636e72; margin-bottom: 5px;">${item.durationText}</div>
+                        <div class="duty-item-row" style="color: #2d3436; margin-bottom: 3px;">
+                            <span>✨</span> <strong style="margin-left: 3px; font-size: 11px;">${item.partnerA}</strong>
+                        </div>
+                        <div class="duty-item-row" style="color: #2d3436;">
+                            <span>✨</span> <strong style="margin-left: 3px; font-size: 11px;">${item.partnerB}</strong>
+                        </div>
+                    </div>
+                `;
+            }
+            exportScheduleGrid.insertAdjacentHTML('beforeend', cardTemplate);
+        });
+
+        const currentTheme = document.documentElement.getAttribute("data-theme");
+        let renderingBGColor = currentTheme === "dark" ? "#060613" : "#f0f4f9";
+        if(currentMode === 'washroom') {
+            renderingBGColor = currentTheme === "dark" ? "#031417" : "#eef9f6";
+        }
+
+        // Render the offline graphic block
+        const exportTarget = document.getElementById("exportCanvasContainer");
+        html2canvas(exportTarget, {
+            backgroundColor: renderingBGColor,
             scale: 2,
-            useCORS: true
+            useCORS: true,
+            logging: false
         }).then(canvas => {
-            sPanel.style.maxHeight = oldS; stPanel.style.maxHeight = oldSt;
             const link = document.createElement("a");
             link.href = canvas.toDataURL("image/png");
             link.download = `${currentMode === 'market' ? 'Market' : 'Washroom'}_Schedule_2026.png`;
@@ -652,7 +987,6 @@
         });
     }
 
-    // Initialize application dropdown on load
     window.onload = function() {
         populateMonthsDropdown();
     };
