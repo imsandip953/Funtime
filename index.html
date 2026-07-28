@@ -129,6 +129,137 @@
             pointer-events: none;
             opacity: var(--cloud-opacity);
         }
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Aesthetic Mess Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            /* --- DEFAULT MARKET MODE (LIGHT) --- */
+            --bg-base: #f0f4f9;
+            --anime-sky: linear-gradient(180deg, #74b9ff 0%, #fab1a0 60%, #ffeaa7 100%);
+            --panel-glass: rgba(255, 255, 255, 0.45);
+            --card-glass: rgba(255, 255, 255, 0.65);
+            --border-glass: 1px solid rgba(255, 255, 255, 0.6);
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --primary-gradient: linear-gradient(135deg, #0984e3, #6c5ce7);
+            --accent: #e17055;
+            --neon-glow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+            --card-shadow: inset 1px 1px 3px rgba(255,255,255,0.5), 0 4px 15px rgba(0,0,0,0.04);
+            
+            --cloud-opacity: 0.85;
+            --star-display: none;
+            --bubble-display: none;
+            --card-bg-duty: rgba(255, 255, 255, 0.8);
+        }
+
+        [data-theme="dark"] {
+            /* --- DEFAULT MARKET MODE (DARK) --- */
+            --bg-base: #0a0a23;
+            --anime-sky: linear-gradient(180deg, #050515 0%, #1a0b2e 40%, #48134a 75%, #101233 100%);
+            --panel-glass: rgba(18, 12, 38, 0.55);
+            --card-glass: rgba(30, 24, 61, 0.65);
+            --border-glass: 1px solid rgba(168, 85, 247, 0.3);
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --primary-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            --accent: #f43f5e;
+            --neon-glow: 0 0 25px rgba(168, 85, 247, 0.4), inset 0 0 15px rgba(0, 242, 254, 0.1);
+            --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            
+            --cloud-opacity: 0.4;
+            --star-display: block;
+            --bubble-display: none;
+            --card-bg-duty: rgba(35, 28, 64, 0.8);
+        }
+
+        /* --- WASHROOM MODE OVERRIDES (LIGHT) --- */
+        [data-ui="washroom"] {
+            --bg-base: #eef9f6;
+            --anime-sky: linear-gradient(135deg, #e0f7fa 0%, #b2dfdb 50%, #80cbc4 100%);
+            --panel-glass: rgba(255, 255, 255, 0.55);
+            --card-glass: rgba(224, 242, 241, 0.8);
+            --border-glass: 1px solid rgba(38, 166, 154, 0.4);
+            --text-main: #004d40;
+            --text-muted: #00796b;
+            --primary-gradient: linear-gradient(135deg, #00bfa5 0%, #00796b 100%);
+            --accent: #d81b60;
+            --neon-glow: 0 8px 32px 0 rgba(0, 150, 136, 0.15);
+            --card-shadow: 0 4px 15px rgba(0, 77, 64, 0.05);
+            
+            --cloud-opacity: 0;
+            --star-display: none;
+            --bubble-display: block;
+            --card-bg-duty: rgba(255, 255, 255, 0.9);
+        }
+
+        /* --- WASHROOM MODE OVERRIDES (DARK) --- */
+        [data-theme="dark"][data-ui="washroom"] {
+            --bg-base: #031417;
+            --anime-sky: linear-gradient(180deg, #010a0c 0%, #031f24 40%, #004d40 85%, #011114 100%);
+            --panel-glass: rgba(2, 24, 27, 0.65);
+            --card-glass: rgba(4, 38, 43, 0.75);
+            --border-glass: 1px solid rgba(0, 242, 254, 0.3);
+            --text-main: #e0f2f1;
+            --text-muted: #80cbc4;
+            --primary-gradient: linear-gradient(135deg, #00f2fe 0%, #00bfa5 100%);
+            --accent: #ff4081;
+            --neon-glow: 0 0 30px rgba(0, 242, 254, 0.35), inset 0 0 15px rgba(0, 191, 165, 0.15);
+            --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            
+            --cloud-opacity: 0;
+            --star-display: none;
+            --bubble-display: block;
+            --card-bg-duty: rgba(12, 53, 59, 0.85);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            transition: background 0.4s ease, border 0.4s ease, box-shadow 0.4s ease, color 0.4s ease;
+        }
+
+        body {
+            background: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: clamp(10px, 3vw, 40px) 15px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- BACKGROUND RENDERING SYSTEM --- */
+        .anime-sky-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--anime-sky);
+            z-index: -3;
+        }
+
+        .anime-clouds {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+            opacity: var(--cloud-opacity);
+        }
 
         .cloud {
             position: absolute;
@@ -447,6 +578,157 @@
             text-transform: uppercase;
             letter-spacing: 0.8px;
             color: var(--accent);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 3px;
+            margin-bottom: 2px;
+        }
+
+        .duty-item-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .duty-item-row .icon-lbl {
+            font-size: 13px;
+        }
+
+        .duty-item-row .name-lbl {
+            color: var(--text-main);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* --- HIGH RESOLUTION TEMPORARY CAPTURE TEMPLATE --- */
+        #exportCanvasContainer {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+            width: 1200px;
+            padding: 40px;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            color: var(--text-main);
+            box-sizing: border-box;
+        }
+
+        #exportCanvasContainer .export-header {
+            text-align: center;
+            border-bottom: 2px dashed rgba(255, 255, 255, 0.3);
+            padding-bottom: 20px;
+        }
+
+        #exportCanvasContainer .export-header h1 {
+            font-family: 'Comfortaa', sans-serif;
+            font-size: 40px;
+            color: #fff;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        #exportCanvasContainer .export-header p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 5px;
+        }
+
+        #exportCanvasContainer .export-section-title {
+            font-family: 'Comfortaa', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        #exportCanvasContainer .export-grid-wrapper {
+            background: rgba(15, 10, 32, 0.45);
+            backdrop-filter: blur(20px);
+            border: var(--border-glass);
+            border-radius: 18px;
+            padding: 25px;
+        }
+
+        #exportCanvasContainer .export-stats-list {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        #exportCanvasContainer .export-stats-item {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        #exportCanvasContainer .export-stats-item .name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        #exportCanvasContainer .export-stats-item .count {
+            display: inline-block;
+            background: #fff;
+            color: #2d3436;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 6px;
+            margin-top: 6px;
+        }
+
+        #exportCanvasContainer .export-schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        #exportCanvasContainer .export-day-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 10px;
+            color: #2d3436;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        #exportCanvasContainer .export-day-card .day-num {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--accent);
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding-bottom: 3px;
+            margin-bottom: 4px;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<div class="anime-sky-bg"></div>
+<div class="anime-clouds"><div class="cloud cloud-1"></div><div class="cloud cloud-2"></div></div>
+<div class="star-container"><div class="shooting-star star-1"></div><div class="shooting-star star-2"></div></div>
+<div class="bubble-container"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div></div>
+
+<div class="container">
+    <div class="header-top-group">
+        <div class="hub-navigation">
+            <button class="nav-tab active" id="tabMarket" onclick="switchMode('market')">🛒 Market Duty</button>
+            <button class="nav-tab" id="tabWashroom" onclick="switchMode('washroom')">🧼 Washroom Duty</button>
+        </div>
+
+        <div class="top-controls">
+            <button class="control-btn download-btn hidden" onclick="downloadDashboardAsImage()" id="downloadBtn">✨ Export Image</button>
+            <button class="control-btn" onclick="toggleTheme()" id="themeBtn">🌌 Twilight UI</button>
+        </dit);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             padding-bottom: 3px;
             margin-bottom: 2px;
